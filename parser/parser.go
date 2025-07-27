@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"errors"
 	"github.com/Tihmmm/mr-decorator-core/config"
+	"github.com/Tihmmm/mr-decorator-core/errors"
 	"log"
 	"sync"
 )
@@ -44,7 +44,7 @@ func Get(format string) (Parser, error) {
 		return p, nil
 	}
 
-	return nil, errors.New("parser not registered")
+	return nil, &errors.FormatError{}
 }
 
 func List() []string {

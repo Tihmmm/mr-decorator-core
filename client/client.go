@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	cfg "github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/errors"
+	custErrors "github.com/Tihmmm/mr-decorator-core/errors"
 	"github.com/doyensec/safeurl"
 	"github.com/google/uuid"
 	"io"
@@ -59,7 +59,7 @@ func (c *GitlabClient) DownloadArtifact(projectId int, jobId int, artifactFileNa
 	}
 	if resp.StatusCode != http.StatusOK {
 		log.Printf("Error downloading artifact for project: %d, job: %d. Gitlab response status: %d\n", projectId, jobId, resp.StatusCode)
-		return "", &errors.DownloadError{}
+		return "", &custErrors.DownloadError{}
 	}
 	defer func(body io.ReadCloser) {
 		err := body.Close()
