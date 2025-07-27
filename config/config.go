@@ -1,45 +1,54 @@
 package config
 
 import (
-	"github.com/caarlos0/env/v10"
+	"bytes"
+	"github.com/goccy/go-yaml"
 	"log"
+	"os"
 )
 
 type Config struct {
-	Server     ServerConfig
-	HttpClient HttpClientConfig
-	Parser     ParserConfig
+	Server       ServerConfig       `yaml:"server"`
+	GitlabClient GitlabClientConfig `yaml:"gitlab_client"`
+	Parser       ParserConfig       `yaml:"parser"`
 }
 
 type ServerConfig struct {
-	Port string `env:"SERVER_PORT" envDefault:"3000"`
+	Port string `yaml:"port" default:"3000"`
 }
-type HttpClientConfig struct {
-	Ip   string `env:"GITLAB_IP,unset"`
-	Host string `env:"GITLAB_DOMAIN,unset"`
+type GitlabClientConfig struct {
+	Ip   string `yaml:"ip"`
+	Host string `yaml:"host"`
 }
 
 type ParserConfig struct {
-	ScaParserConfig  ScaParserConfig
-	SastParserConfig SastParserConfig
+	ScaParserConfig  ScaParserConfig  `yaml:"sca"`
+	SastParserConfig SastParserConfig `yaml:"sast"`
 }
 
 type ScaParserConfig struct {
-	VulnMgmtProjectUrlTmpl string `env:"SCA_VULN_MGMT_PROJECT_BASE_URL,unset"`
-	VulnInstanceTmpl       string `env:"SCA_VULN_MGMT_INSTANCE_SUBPATH_TEMPLATE,unset"`
-	ReportPath             string `env:"SCA_VULN_MGMT_REPORT_SUBPATH_TEMPLATE,unset"`
+	VulnMgmtProjectUrlTmpl string `yaml:"vuln_mgmt_project_url_tmpl"`
+	VulnInstanceTmpl       string `yaml:"vuln_instance_tmpl"`
+	ReportPath             string `yaml:"report_path"`
 }
 
 type SastParserConfig struct {
-	VulnMgmtProjectUrlTmpl string `env:"SAST_VULN_MGMT_PROJECT_BASE_URL,unset"`          // e.g. https://fortify-ssc.company.com/html/ssc/version/%d
-	VulnInstanceTmpl       string `env:"SAST_VULN_MGMT_INSTANCE_SUBPATH_TEMPLATE,unset"` // e.g. audit?q=instance_id%3A
-	ReportPath             string `env:"SAST_VULN_MGMT_REPORT_SUBPATH_TEMPLATE,unset"`   // e.g. audit?q=analysis_type%3Asca
+	VulnMgmtProjectUrlTmpl string `yaml:"vuln_mgmt_project_url_tmpl"` // e.g. https://fortify-ssc.company.com/html/ssc/version/%d
+	VulnInstanceTmpl       string `yaml:"vuln_instance_tmpl"`         // e.g. audit?q=instance_id%3A
+	ReportPath             string `yaml:"report_path"`                // e.g. audit?q=analysis_type%3Asca
 }
 
-func NewConfig() Config {
-	cfg := Config{}
-	if err := env.Parse(&cfg); err != nil {
-		log.Fatalf("Error initializing config: %s\n", err)
+func NewConfig(path string) Config {
+	configBytes, err := os.ReadFile(path)
+	if err != nil {
+		log.Fatalf("Error reading config.yml: %s\n", err)
+	}
+
+	var cfg Config
+	buf := bytes.NewBuffer(configBytes)
+	dec := yaml.NewDecoder(buf)
+	if err := dec.Decode(&cfg); err != nil {
+		log.Fatalf("Error parsing config.yml: %s\n", err)
 	}
 
 	return cfg

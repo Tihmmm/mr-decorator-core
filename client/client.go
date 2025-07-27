@@ -20,15 +20,15 @@ type Client interface {
 	SendNote(note string, projectId int, mergeRequestIid int, glToken string) (err error)
 }
 
-type HttpClient struct {
-	cfg    cfg.HttpClientConfig
+type GitlabClient struct {
+	cfg    cfg.GitlabClientConfig
 	client *safeurl.WrappedClient
 }
 
-func NewHttpClient(cfg cfg.HttpClientConfig) Client {
+func NewHttpClient(cfg cfg.GitlabClientConfig) Client {
 	config := safeurl.GetConfigBuilder().SetAllowedIPs(cfg.Ip).
 		Build()
-	httpClient := &HttpClient{
+	httpClient := &GitlabClient{
 		cfg:    cfg,
 		client: safeurl.Client(config),
 	}
@@ -44,7 +44,7 @@ const (
 	contentTypeJson                   = "application/json"
 )
 
-func (c *HttpClient) GetArtifact(projectId int, jobId int, artifactFileName string, glToken string) (artifactDir string, err error) {
+func (c *GitlabClient) GetArtifact(projectId int, jobId int, artifactFileName string, glToken string) (artifactDir string, err error) {
 	jobArtifactPath := fmt.Sprintf(jobArtifactsEndpointBasePath, projectId, jobId, artifactFileName)
 	req, err := newBaseGetRequest(jobArtifactPath, glToken, c.cfg.Host)
 	if err != nil {
@@ -88,7 +88,7 @@ func (c *HttpClient) GetArtifact(projectId int, jobId int, artifactFileName stri
 	return dirPath, nil
 }
 
-func (c *HttpClient) SendNote(note string, projectId int, mergeRequestIid int, glToken string) (err error) {
+func (c *GitlabClient) SendNote(note string, projectId int, mergeRequestIid int, glToken string) (err error) {
 	body := struct {
 		Body string `json:"body"`
 	}{note}
