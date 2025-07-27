@@ -25,7 +25,7 @@ type GitlabClient struct {
 	client *safeurl.WrappedClient
 }
 
-func NewHttpClient(cfg cfg.GitlabClientConfig) Client {
+func NewGitlabClient(cfg cfg.GitlabClientConfig) Client {
 	config := safeurl.GetConfigBuilder().SetAllowedIPs(cfg.Ip).
 		Build()
 	httpClient := &GitlabClient{
