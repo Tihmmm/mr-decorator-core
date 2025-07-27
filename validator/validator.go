@@ -27,7 +27,7 @@ func NewValidator() Validator {
 }
 
 func (v *RequestValidator) IsValidAll(reqBody *models.MRRequest) bool {
-	return v.IsValidStruct(reqBody) && v.isValidFormat(reqBody.ArtifactFileName)
+	return v.IsValidStruct(reqBody) && v.isValidFormat(reqBody.ArtifactFormat)
 }
 
 func (v *RequestValidator) IsValidStruct(reqBody *models.MRRequest) bool {
