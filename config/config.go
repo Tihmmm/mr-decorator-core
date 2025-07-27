@@ -38,7 +38,7 @@ type GitlabClientConfig struct {
 	Host string `yaml:"host"`
 }
 
-func NewGeneralConfig(path string) Config {
+func NewConfig(path string) Config {
 	configBytes, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("Error reading config.yml: %s\n", err)
