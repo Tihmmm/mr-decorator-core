@@ -7,6 +7,12 @@ import (
 	"os"
 )
 
+type Config struct {
+	Parser       ParserConfig       `yaml:"parser"`
+	Server       ServerConfig       `yaml:"server"`
+	GitlabClient GitlabClientConfig `yaml:"gitlab_client"`
+}
+
 type ParserConfig struct {
 	ScaParserConfig  ScaParserConfig  `yaml:"sca"`
 	SastParserConfig SastParserConfig `yaml:"sast"`
@@ -24,13 +30,21 @@ type SastParserConfig struct {
 	ReportPath             string `yaml:"report_path"`                // e.g. audit?q=analysis_type%3Asca
 }
 
-func NewParserConfig(path string) ParserConfig {
+type ServerConfig struct {
+	Port string `yaml:"port" default:"3000"`
+}
+type GitlabClientConfig struct {
+	Ip   string `yaml:"ip"`
+	Host string `yaml:"host"`
+}
+
+func NewGeneralConfig(path string) Config {
 	configBytes, err := os.ReadFile(path)
 	if err != nil {
 		log.Fatalf("Error reading config.yml: %s\n", err)
 	}
 
-	var cfg ParserConfig
+	var cfg Config
 	buf := bytes.NewBuffer(configBytes)
 	dec := yaml.NewDecoder(buf)
 	if err := dec.Decode(&cfg); err != nil {

@@ -17,8 +17,6 @@ const (
 
 type Decorator interface {
 	Decorate(mr *models.MRRequest, prsr parser.Parser) error
-	//DecorateServer(mr *models.MRRequest) error
-	//DecorateCli(mr *models.MRRequest) error
 }
 
 type MRDecorator struct {

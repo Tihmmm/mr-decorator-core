@@ -45,6 +45,6 @@ func (v *RequestValidator) isValidFormat(format string) bool {
 		return true
 	}
 
-	log.Printf("Invalid artifact filename: %s\n", format)
+	log.Printf("Invalid artifact format: %s\n", format)
 	return false
 }
