@@ -1,7 +1,6 @@
 package models
 
 type MRRequest struct {
-	DecoratorApiKey     string `json:"decorator_api_key"`
 	AuthToken           string `json:"auth_token" validate:"required"`
 	FilePath            string
 	ProjectId           int    `json:"project_id"`
