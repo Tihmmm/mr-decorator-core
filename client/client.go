@@ -74,8 +74,12 @@ func (c *GitlabClient) DownloadArtifact(projectId int, jobId int, artifactFileNa
 		log.Printf("Error creating artifact directory: %s\n", err)
 		return "", err
 	}
-	filePath := filepath.Join(dirPath, artifactFileName)
-	out, err := os.Create(filePath)
+	dirRoot, err := os.OpenRoot(dirPath)
+	if err != nil {
+		log.Printf("Error opening artifact root dir '%s': %s\n", dirPath, err)
+		return "", err
+	}
+	out, err := dirRoot.Create(artifactFileName)
 	if err != nil {
 		log.Printf("Error creating artifact file: %s\n", err)
 		return "", err
