@@ -12,7 +12,8 @@ type MRRequest struct {
 }
 
 const (
-	FprFn                 = "current.fpr"
-	CyclonedxJsonFn       = "cdx.json"             // "http://cyclonedx.org/schema/bom-1.5.schema.json"
-	DependencyCheckJsonFn = "depcheck-report.json" // "reportSchema": "1.1"
+	FormatSast = "sast"
+	FormatSca  = "sca"
 )
+
+var AllowedFormats = []string{FormatSast, FormatSca}

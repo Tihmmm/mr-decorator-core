@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func ExecToString(baseTemplate string, vuln any) (string, error) {
+func ExecToString(baseTemplate string, data any) (string, error) {
 	compiled, err := template.New("").Parse(baseTemplate)
 	if err != nil {
 		log.Printf("Error compiling template: %s", err)
@@ -16,7 +16,7 @@ func ExecToString(baseTemplate string, vuln any) (string, error) {
 	}
 
 	var buff bytes.Buffer
-	if err := compiled.Execute(&buff, &vuln); err != nil {
+	if err := compiled.Execute(&buff, &data); err != nil {
 		log.Printf("Error executing template: %s", err)
 		return "", err
 	}

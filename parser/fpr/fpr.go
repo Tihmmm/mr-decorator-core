@@ -1,9 +1,7 @@
-package parser
+package fpr
 
 import (
 	"bufio"
-	"fmt"
-	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"log"
 	"os"
@@ -31,34 +29,6 @@ type fprRecord struct {
 	category        string
 	path            string
 	sscVulnInstance string
-}
-
-func (f *fpr) ToGenSast(cfg config.SastParserConfig, vulnMgmtId int) GenSast {
-	var genSast GenSast
-	genSast.HcCount = f.vulnCount()
-	genSast.HighCount = f.highCount
-	genSast.CriticalCount = f.criticalCount
-	baseUrl := fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
-	genSast.VulnMgmtProjectUrl = baseUrl
-	for _, v := range f.highRecords {
-		highVulns := Vulnerability{
-			Name:             v.category,
-			Location:         v.path,
-			VulnMgmtInstance: baseUrl + fmt.Sprintf(cfg.VulnInstanceTmpl, v.sscVulnInstance),
-		}
-		genSast.HighVulns = append(genSast.HighVulns, highVulns)
-	}
-	for _, v := range f.criticalRecords {
-		criticalVulns := Vulnerability{
-			Name:             v.category,
-			Location:         v.path,
-			VulnMgmtInstance: baseUrl + fmt.Sprintf(cfg.VulnInstanceTmpl, v.sscVulnInstance),
-		}
-		genSast.CriticalVulns = append(genSast.CriticalVulns, criticalVulns)
-	}
-	genSast.VulnMgmtReportPath = baseUrl + cfg.ReportPath
-
-	return genSast
 }
 
 func (f *fpr) vulnCount() int {

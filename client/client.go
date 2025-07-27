@@ -16,7 +16,7 @@ import (
 )
 
 type Client interface {
-	GetArtifact(projectId int, jobId int, artifactFileName string, glToken string) (artifactDir string, err error)
+	DownloadArtifact(projectId int, jobId int, artifactFileName string, glToken string) (artifactDir string, err error)
 	SendNote(note string, projectId int, mergeRequestIid int, glToken string) (err error)
 }
 
@@ -44,7 +44,7 @@ const (
 	contentTypeJson                   = "application/json"
 )
 
-func (c *GitlabClient) GetArtifact(projectId int, jobId int, artifactFileName string, glToken string) (artifactDir string, err error) {
+func (c *GitlabClient) DownloadArtifact(projectId int, jobId int, artifactFileName string, glToken string) (artifactDir string, err error) {
 	jobArtifactPath := fmt.Sprintf(jobArtifactsEndpointBasePath, projectId, jobId, artifactFileName)
 	req, err := newBaseGetRequest(jobArtifactPath, glToken, c.cfg.Host)
 	if err != nil {

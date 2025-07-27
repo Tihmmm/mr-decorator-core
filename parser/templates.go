@@ -1,6 +1,6 @@
 package parser
 
-const baseTemplateSca = `
+const BaseTemplateSca = `
 <h2>Software composition analysis summary</h2>
 {{ if (gt .Count 0) }}
 <h3>Vulnerabilities found: {{ .Count }}</h3>
@@ -25,7 +25,7 @@ const baseTemplateSca = `
 {{ end }}
 `
 
-const baseTemplateSast = `
+const BaseTemplateSast = `
 <h2>Static application security testing summary</h2>
 {{ if and (.HcCount) (gt .HcCount 0) }}
 <h3> Critical vulnerabilities: {{ .CriticalCount }} </h3>

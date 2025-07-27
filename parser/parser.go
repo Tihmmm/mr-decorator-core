@@ -1,12 +1,10 @@
 package parser
 
 import (
+	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/errors"
-	"github.com/Tihmmm/mr-decorator-core/models"
-	"github.com/Tihmmm/mr-decorator-core/pkg/file"
-	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 	"log"
+	"sync"
 )
 
 const (
@@ -15,63 +13,50 @@ const (
 )
 
 type Parser interface {
-	Parse(format string, fileName string, fileDir string, vulnMgmtId int) (note string, err error)
+	Name() string
+	Type() string
+	SetConfig(cfg *config.ParserConfig)
+	GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error)
 }
 
-type ArtifactParser struct {
-	cfg config.ParserConfig
-}
+var (
+	mu       sync.RWMutex
+	registry = make(map[string]Parser)
+)
 
-func NewParser(cfg config.ParserConfig) Parser {
-	parser := &ArtifactParser{
-		cfg: cfg,
+func Register(p Parser) {
+	mu.Lock()
+	defer mu.Unlock()
+
+	key := p.Name()
+	if _, exists := registry[key]; exists {
+		log.Fatalf("Parser already registered: %s", p.Name())
 	}
-	return parser
+
+	//p.SetConfig()
+
+	registry[key] = p
 }
 
-func (p *ArtifactParser) Parse(format string, fileName string, dir string, vulnMgmtId int) (string, error) {
-	switch format {
-	case models.FprFn:
-		var f fpr
-		if err := ParseFprFile(dir, &f); err != nil {
-			return "", err
-		}
-		sast := f.ToGenSast(p.cfg.SastParserConfig, vulnMgmtId)
-		sast.ApplyLimit()
-		note, err := templater.ExecToString(baseTemplateSast, &sast)
-		if err != nil {
-			log.Printf("Error executing sast template: %s\n", err)
-			return "", err
-		}
-		return note, nil
-	case models.CyclonedxJsonFn:
-		var dx cycloneDX
-		if err := file.ParseJsonFile(dir, fileName, &dx); err != nil {
-			return "", err
-		}
-		sca := dx.ToGenSca(p.cfg.ScaParserConfig, vulnMgmtId)
-		sca.ApplyLimit()
-		note, err := templater.ExecToString(baseTemplateSca, &sca)
-		if err != nil {
-			log.Printf("Error executing cdx template: %s\n", err)
-			return "", err
-		}
-		return note, nil
-	case models.DependencyCheckJsonFn:
-		var dc dependencyCheck
-		if err := file.ParseJsonFile(dir, fileName, &dc); err != nil {
-			return "", err
-		}
-		sca := dc.ToGenSca(p.cfg.ScaParserConfig, vulnMgmtId)
-		sca.ApplyLimit()
-		note, err := templater.ExecToString(baseTemplateSca, &sca)
-		if err != nil {
-			log.Printf("Error executing depcheck template: %s\n", err)
-			return "", err
-		}
-		return note, nil
-	default:
-		log.Printf("Invalid format: %s\n", format)
-		return "", &errors.FormatError{}
+func Get(format string) (Parser, error) {
+	mu.RLock()
+	defer mu.RUnlock()
+
+	if p, ok := registry[format]; ok {
+		return p, nil
 	}
+
+	return nil, fmt.Errorf("no parser registered for format %q\n", format)
+}
+
+func List() []string {
+	mu.RLock()
+	defer mu.RUnlock()
+
+	keys := make([]string, 0, len(registry))
+	for k := range registry {
+		keys = append(keys, k)
+	}
+
+	return keys
 }
