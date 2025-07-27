@@ -127,8 +127,9 @@ func (c *GitlabClient) SendNote(note string, projectId int, mergeRequestIid int,
 
 	if resp.StatusCode != http.StatusCreated {
 		log.Printf("Error sending note. Gitlab response status code: %d\nbody: %s\n", resp.StatusCode, string(respBuf))
-		return
+		return err
 	}
+
 	return nil
 }
 

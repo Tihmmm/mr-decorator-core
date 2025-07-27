@@ -45,18 +45,20 @@ type SastParserConfig struct {
 	ReportPath             string `yaml:"report_path"`                // e.g. audit?q=analysis_type%3Asca
 }
 
-func NewConfig(path string) Config {
+func NewConfig(path string) (Config, error) {
 	configBytes, err := os.ReadFile(path)
 	if err != nil {
-		log.Fatalf("Error reading config.yml: %s\n", err)
+		log.Printf("Error reading config.yml: %s\n", err)
+		return Config{}, err
 	}
 
 	var cfg Config
 	buf := bytes.NewBuffer(configBytes)
 	dec := yaml.NewDecoder(buf)
 	if err := dec.Decode(&cfg); err != nil {
-		log.Fatalf("Error parsing config.yml: %s\n", err)
+		log.Printf("Error parsing config.yml: %s\n", err)
+		return Config{}, err
 	}
 
-	return cfg
+	return cfg, nil
 }
