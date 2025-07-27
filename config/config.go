@@ -8,9 +8,24 @@ import (
 )
 
 type Config struct {
-	Parser       ParserConfig       `yaml:"parser"`
+	Decorator    DecoratorConfig    `yaml:"decorator"`
 	Server       ServerConfig       `yaml:"server"`
 	GitlabClient GitlabClientConfig `yaml:"gitlab_client"`
+	Parser       ParserConfig       `yaml:"parser"`
+}
+
+type DecoratorConfig struct {
+	ArtifactDownloadMaxRetries int `yaml:"artifact_download_max_retries" default:"3"`
+	ArtifactDownloadRetryDelay int `yaml:"artifact_download_retry_delay" default:"2"` // seconds
+}
+
+type ServerConfig struct {
+	Port      string `yaml:"port" default:"3000"`
+	RateLimit int    `yaml:"rate_limit" default:"3"`
+}
+type GitlabClientConfig struct {
+	Ip   string `yaml:"ip"`
+	Host string `yaml:"host"`
 }
 
 type ParserConfig struct {
@@ -28,14 +43,6 @@ type SastParserConfig struct {
 	VulnMgmtProjectUrlTmpl string `yaml:"vuln_mgmt_project_url_tmpl"` // e.g. https://fortify-ssc.company.com/html/ssc/version/%d
 	VulnInstanceTmpl       string `yaml:"vuln_instance_tmpl"`         // e.g. audit?q=instance_id%3A
 	ReportPath             string `yaml:"report_path"`                // e.g. audit?q=analysis_type%3Asca
-}
-
-type ServerConfig struct {
-	Port string `yaml:"port" default:"3000"`
-}
-type GitlabClientConfig struct {
-	Ip   string `yaml:"ip"`
-	Host string `yaml:"host"`
 }
 
 func NewConfig(path string) Config {

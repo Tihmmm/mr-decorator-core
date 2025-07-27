@@ -15,5 +15,3 @@ const (
 	FormatSast = "sast"
 	FormatSca  = "sca"
 )
-
-var AllowedFormats = []string{FormatSast, FormatSca}

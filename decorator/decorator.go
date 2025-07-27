@@ -1,7 +1,10 @@
 package decorator
 
 import (
+	"errors"
 	"github.com/Tihmmm/mr-decorator-core/client"
+	"github.com/Tihmmm/mr-decorator-core/config"
+	custErrors "github.com/Tihmmm/mr-decorator-core/errors"
 	"github.com/Tihmmm/mr-decorator-core/models"
 	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
@@ -21,36 +24,41 @@ type Decorator interface {
 
 type MRDecorator struct {
 	mode string // either `cli` or `server`
+	cfg  config.DecoratorConfig
 	c    client.Client
 }
 
-func NewDecorator(m string, c client.Client) Decorator {
+func NewDecorator(m string, cfg config.DecoratorConfig, c client.Client) Decorator {
 	return &MRDecorator{
 		mode: m,
+		cfg:  cfg,
 		c:    c,
 	}
 }
 
-const waitTime = 4 * time.Second // waiting for artifacts to be loaded
-
 func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
-	if d.mode == ModeServer {
-		time.Sleep(waitTime)
-	}
-
 	log.Printf("%s Started processing request for project: %d, merge request id: %d, job id: %d\n", time.Now().Format(time.DateTime), mr.ProjectId, mr.MergeRequestIid, mr.JobId)
 
 	artifactsDir := ""
-	if d.mode == ModeCli && mr.FilePath == "" {
-		artifactsDir, err := d.c.DownloadArtifact(mr.ProjectId, mr.JobId, mr.ArtifactFileName, mr.AuthToken)
+	var err error
+	if d.mode == ModeCli && mr.FilePath != "" {
+		artifactsDir, mr.ArtifactFileName = filepath.Split(mr.FilePath)
+	} else {
+		retryCount := 0
+		for retryCount < d.cfg.ArtifactDownloadMaxRetries {
+			artifactsDir, err = d.c.DownloadArtifact(mr.ProjectId, mr.JobId, mr.ArtifactFileName, mr.AuthToken)
+			if err != nil && errors.Is(err, &custErrors.DownloadError{}) {
+				retryCount++
+				time.Sleep(time.Duration(d.cfg.ArtifactDownloadRetryDelay) * time.Second)
+				continue
+			}
+		}
 		if err != nil {
 			log.Printf("Error getting artifact: %v\n", err)
 			return err
 		}
-		defer file.DeleteDirectory(artifactsDir)
-	} else {
-		artifactsDir, mr.ArtifactFileName = filepath.Split(mr.FilePath)
 	}
+	defer file.DeleteDirectory(artifactsDir)
 
 	note, err := prsr.GetNoteFromReportFile(artifactsDir, mr.ArtifactFileName, mr.VulnerabilityMgmtId)
 
