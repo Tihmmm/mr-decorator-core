@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"fmt"
+	"errors"
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"log"
 	"sync"
@@ -33,8 +33,6 @@ func Register(p Parser) {
 		log.Fatalf("Parser already registered: %s", p.Name())
 	}
 
-	//p.SetConfig()
-
 	registry[key] = p
 }
 
@@ -46,7 +44,7 @@ func Get(format string) (Parser, error) {
 		return p, nil
 	}
 
-	return nil, fmt.Errorf("no parser registered for format %q\n", format)
+	return nil, errors.New("parser not registered")
 }
 
 func List() []string {
