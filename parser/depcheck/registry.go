@@ -3,7 +3,6 @@ package depcheck
 import (
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/models"
 	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
@@ -19,7 +18,7 @@ func (p DepCheckParser) Name() string {
 }
 
 func (p DepCheckParser) Type() string {
-	return models.FormatSca
+	return parser.TypeSca
 }
 
 func (p DepCheckParser) SetConfig(cfg *config.ParserConfig) {

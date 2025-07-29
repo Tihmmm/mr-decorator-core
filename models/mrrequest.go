@@ -10,8 +10,3 @@ type MRRequest struct {
 	MergeRequestIid     int    `json:"merge_request_iid" validate:"required"`
 	VulnerabilityMgmtId int    `json:"vulnerability_mgmt_id" validate:"required"`
 }
-
-const (
-	FormatSast = "sast"
-	FormatSca  = "sca"
-)

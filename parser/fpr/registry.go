@@ -3,7 +3,6 @@ package fpr
 import (
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/models"
 	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 	"log"
@@ -18,7 +17,7 @@ func (p FprParser) Name() string {
 }
 
 func (p FprParser) Type() string {
-	return models.FormatSast
+	return parser.TypeSast
 }
 
 func (p FprParser) SetConfig(cfg *config.ParserConfig) {

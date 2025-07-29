@@ -1,6 +1,8 @@
 package parser
 
-const BaseTemplateSca = `
+const (
+	TypeSca         = "sca"
+	BaseTemplateSca = `
 <h2>Software composition analysis summary</h2>
 {{ if (gt .Count 0) }}
 <h3>Vulnerabilities found: {{ .Count }}</h3>
@@ -24,8 +26,11 @@ const BaseTemplateSca = `
 <h3>No vulnerable components found</h3>
 {{ end }}
 `
+)
 
-const BaseTemplateSast = `
+const (
+	TypeSast         = "sast"
+	BaseTemplateSast = `
 <h2>Static application security testing summary</h2>
 {{ if and (.HcCount) (gt .HcCount 0) }}
 <h3> Critical vulnerabilities: {{ .CriticalCount }} </h3>
@@ -59,3 +64,4 @@ const BaseTemplateSast = `
 <h3>No serious vulnerabilities found</h3>
 {{ end }}
 `
+)
