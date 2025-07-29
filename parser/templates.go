@@ -1,5 +1,10 @@
 package parser
 
+var Types = map[string]string{
+	TypeSca:  BaseTemplateSca,
+	TypeSast: BaseTemplateSast,
+}
+
 const (
 	TypeSca         = "sca"
 	BaseTemplateSca = `
