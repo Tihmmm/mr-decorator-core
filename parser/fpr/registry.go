@@ -40,20 +40,18 @@ func (p FprParser) GetNoteFromReportFile(dir string, _ string, vulnMgmtId int) (
 }
 
 func parseGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, dest *parser.GenSast) {
-	var genReport parser.GenSast
-
-	genReport.HcCount = fprr.vulnCount()
-	genReport.HighCount = fprr.highCount
-	genReport.CriticalCount = fprr.criticalCount
+	dest.HcCount = fprr.vulnCount()
+	dest.HighCount = fprr.highCount
+	dest.CriticalCount = fprr.criticalCount
 	baseUrl := fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
-	genReport.VulnMgmtProjectUrl = baseUrl
+	dest.VulnMgmtProjectUrl = baseUrl
 	for _, v := range fprr.highRecords {
 		highVulns := parser.Vulnerability{
 			Name:             v.category,
 			Location:         v.path,
 			VulnMgmtInstance: baseUrl + fmt.Sprintf(cfg.VulnInstanceTmpl, v.sscVulnInstance),
 		}
-		genReport.HighVulns = append(genReport.HighVulns, highVulns)
+		dest.HighVulns = append(dest.HighVulns, highVulns)
 	}
 	for _, v := range fprr.criticalRecords {
 		criticalVulns := parser.Vulnerability{
@@ -61,11 +59,9 @@ func parseGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, des
 			Location:         v.path,
 			VulnMgmtInstance: baseUrl + fmt.Sprintf(cfg.VulnInstanceTmpl, v.sscVulnInstance),
 		}
-		genReport.CriticalVulns = append(genReport.CriticalVulns, criticalVulns)
+		dest.CriticalVulns = append(dest.CriticalVulns, criticalVulns)
 	}
-	genReport.VulnMgmtReportPath = baseUrl + cfg.ReportPath
-
-	dest = &genReport
+	dest.VulnMgmtReportPath = baseUrl + cfg.ReportPath
 }
 
 func init() {

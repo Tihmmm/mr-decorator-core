@@ -41,10 +41,9 @@ func (p CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId 
 }
 
 func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX, dest *parser.GenSca) {
-	var genSca parser.GenSca
-	genSca.Count = cdx.vulnCount()
+	dest.Count = cdx.vulnCount()
 	baseUrl := fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
-	genSca.VulnMgmtProjectUrl = baseUrl
+	dest.VulnMgmtProjectUrl = baseUrl
 	for _, vuln := range cdx.Vulnerabilities {
 		cve := parser.Cve{
 			Id:              vuln.CveId,
@@ -52,11 +51,9 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX,
 			Description:     vuln.Description,
 			Recommendations: vuln.Recommendation,
 		}
-		genSca.Cves = append(genSca.Cves, cve)
+		dest.Cves = append(dest.Cves, cve)
 	}
-	genSca.VulnMgmtReportPath = baseUrl + cfg.ReportPath
-
-	dest = &genSca
+	dest.VulnMgmtReportPath = baseUrl + cfg.ReportPath
 }
 
 func init() {

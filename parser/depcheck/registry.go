@@ -41,10 +41,9 @@ func (p DepCheckParser) GetNoteFromReportFile(dir string, subpath string, vulnMg
 }
 
 func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyCheck, dest *parser.GenSca) {
-	var genSca parser.GenSca
-	genSca.Count = dc.vulnCount()
+	dest.Count = dc.vulnCount()
 	baseUrl := fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
-	genSca.VulnMgmtProjectUrl = baseUrl
+	dest.VulnMgmtProjectUrl = baseUrl
 	for _, v := range dc.Dependencies {
 		for _, vuln := range v.Vulnerabilities {
 			cve := parser.Cve{
@@ -52,12 +51,10 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyC
 				LibraryName: v.LibraryName,
 				Description: vuln.Description,
 			}
-			genSca.Cves = append(genSca.Cves, cve)
+			dest.Cves = append(dest.Cves, cve)
 		}
 	}
-	genSca.VulnMgmtReportPath = baseUrl + cfg.ReportPath
-
-	dest = &genSca
+	dest.VulnMgmtReportPath = baseUrl + cfg.ReportPath
 }
 
 func init() {
