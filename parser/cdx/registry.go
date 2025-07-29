@@ -9,6 +9,7 @@ import (
 	"log"
 )
 
+// CdxParser for json CycloneDX 1.6 SBOMs as outputted by trivy
 type CdxParser struct {
 	cfg *config.ScaParserConfig
 }

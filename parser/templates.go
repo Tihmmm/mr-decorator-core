@@ -17,7 +17,9 @@ const (
 {{ range $cve := .Cves }}
 <details>
 <summary><b>{{ $cve.Id }} in {{ $cve.LibraryName }}</b></summary>
+{{ if $cve.Description }}
 <b>Description:</b> {{ $cve.Description }}<br>
+{{ end }}
 {{ if $cve.Recommendations }}
 <b>Recommendations:</b> {{ $cve.Recommendations }}
 {{ end }}
