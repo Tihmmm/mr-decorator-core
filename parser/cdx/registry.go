@@ -13,19 +13,20 @@ type CdxParser struct {
 	cfg *config.ScaParserConfig
 }
 
-func (p CdxParser) Name() string {
+func (p *CdxParser) Name() string {
 	return "cyclonedx"
 }
 
-func (p CdxParser) Type() string {
+func (p *CdxParser) Type() string {
 	return parser.TypeSca
 }
 
-func (p CdxParser) SetConfig(cfg *config.ParserConfig) {
+func (p *CdxParser) SetConfig(cfg *config.ParserConfig) {
 	p.cfg = &cfg.ScaParserConfig
+	log.Println(p.cfg)
 }
 
-func (p CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
+func (p *CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
 	var cdx cycloneDX
 	if err := file.ParseJsonFile(dir, subpath, &cdx); err != nil {
 		log.Printf("error parsing cyclonedx file: %v\n", err)
@@ -42,8 +43,9 @@ func (p CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId 
 
 func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX, dest *parser.GenSca) {
 	dest.Count = cdx.vulnCount()
-	baseUrl := fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
-	dest.VulnMgmtProjectUrl = baseUrl
+	if cfg.VulnMgmtProjectUrlTmpl != "" {
+		dest.VulnMgmtProjectUrl = fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
+	}
 	for _, vuln := range cdx.Vulnerabilities {
 		cve := parser.Cve{
 			Id:              vuln.CveId,
@@ -53,9 +55,9 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX,
 		}
 		dest.Cves = append(dest.Cves, cve)
 	}
-	dest.VulnMgmtReportPath = baseUrl + cfg.ReportPath
+	dest.VulnMgmtReportPath = dest.VulnMgmtProjectUrl + cfg.ReportPath
 }
 
 func init() {
-	parser.Register(CdxParser{})
+	parser.Register(&CdxParser{})
 }

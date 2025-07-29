@@ -13,19 +13,19 @@ type DepCheckParser struct {
 	cfg *config.ScaParserConfig
 }
 
-func (p DepCheckParser) Name() string {
+func (p *DepCheckParser) Name() string {
 	return "dependency-check"
 }
 
-func (p DepCheckParser) Type() string {
+func (p *DepCheckParser) Type() string {
 	return parser.TypeSca
 }
 
-func (p DepCheckParser) SetConfig(cfg *config.ParserConfig) {
+func (p *DepCheckParser) SetConfig(cfg *config.ParserConfig) {
 	p.cfg = &cfg.ScaParserConfig
 }
 
-func (p DepCheckParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
+func (p *DepCheckParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
 	var depcheck dependencyCheck
 	if err := file.ParseJsonFile(dir, subpath, &depcheck); err != nil {
 		log.Printf("error parsing dependency check file: %v\n", err)
@@ -58,5 +58,5 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyC
 }
 
 func init() {
-	parser.Register(DepCheckParser{})
+	parser.Register(&DepCheckParser{})
 }

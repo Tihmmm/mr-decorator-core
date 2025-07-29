@@ -12,19 +12,19 @@ type FprParser struct {
 	cfg *config.SastParserConfig
 }
 
-func (p FprParser) Name() string {
+func (p *FprParser) Name() string {
 	return "fpr"
 }
 
-func (p FprParser) Type() string {
+func (p *FprParser) Type() string {
 	return parser.TypeSast
 }
 
-func (p FprParser) SetConfig(cfg *config.ParserConfig) {
+func (p *FprParser) SetConfig(cfg *config.ParserConfig) {
 	p.cfg = &cfg.SastParserConfig
 }
 
-func (p FprParser) GetNoteFromReportFile(dir string, _ string, vulnMgmtId int) (string, error) {
+func (p *FprParser) GetNoteFromReportFile(dir string, _ string, vulnMgmtId int) (string, error) {
 	var fprr fpr
 	if err := ParseFprFile(dir, &fprr); err != nil {
 		log.Printf("error parsing fpr file: %v\n", err)
@@ -65,5 +65,5 @@ func parseGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, des
 }
 
 func init() {
-	parser.Register(FprParser{})
+	parser.Register(&FprParser{})
 }
