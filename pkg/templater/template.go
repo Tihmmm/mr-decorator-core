@@ -16,7 +16,7 @@ func ExecToString(baseTemplate string, data any) (string, error) {
 	}
 
 	var buff bytes.Buffer
-	if err := compiled.Execute(&buff, &data); err != nil {
+	if err := compiled.Execute(&buff, data); err != nil {
 		log.Printf("Error executing template: %s", err)
 		return "", err
 	}

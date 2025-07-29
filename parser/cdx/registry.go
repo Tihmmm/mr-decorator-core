@@ -38,7 +38,7 @@ func (p *CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId
 
 	genReport.ApplyLimit()
 
-	return templater.ExecToString(parser.Types[p.Type()], genReport)
+	return templater.ExecToString(parser.Types[p.Type()], &genReport)
 }
 
 func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX, dest *parser.GenSca) {

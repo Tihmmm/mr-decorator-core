@@ -36,7 +36,7 @@ func (p *FprParser) GetNoteFromReportFile(dir string, _ string, vulnMgmtId int) 
 
 	genReport.ApplyLimit()
 
-	return templater.ExecToString(parser.Types[p.Type()], genReport)
+	return templater.ExecToString(parser.Types[p.Type()], &genReport)
 }
 
 func parseGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, dest *parser.GenSast) {

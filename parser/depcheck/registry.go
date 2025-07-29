@@ -37,7 +37,7 @@ func (p *DepCheckParser) GetNoteFromReportFile(dir string, subpath string, vulnM
 
 	genReport.ApplyLimit()
 
-	return templater.ExecToString(parser.Types[p.Type()], genReport)
+	return templater.ExecToString(parser.Types[p.Type()], &genReport)
 }
 
 func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyCheck, dest *parser.GenSca) {

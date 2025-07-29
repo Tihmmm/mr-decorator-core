@@ -24,5 +24,5 @@ func (p *SemgrepParser) SetConfig(cfg *config.ParserConfig) {
 
 func (p *SemgrepParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
 	var genReport parser.GenSast
-	return templater.ExecToString(parser.Types[p.Type()], genReport)
+	return templater.ExecToString(parser.Types[p.Type()], &genReport)
 }
