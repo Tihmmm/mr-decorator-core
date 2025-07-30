@@ -58,7 +58,9 @@ func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
 			return err
 		}
 	}
-	defer file.DeleteDirectory(artifactsDir)
+	if d.mode == ModeServer {
+		defer file.DeleteDirectory(artifactsDir)
+	}
 
 	note, err := prsr.GetNoteFromReportFile(artifactsDir, mr.ArtifactFileName, mr.VulnerabilityMgmtId)
 
