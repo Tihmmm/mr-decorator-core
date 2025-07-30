@@ -63,6 +63,10 @@ func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
 	}
 
 	note, err := prsr.GetNoteFromReportFile(artifactsDir, mr.ArtifactFileName, mr.VulnerabilityMgmtId)
+	if err != nil {
+		log.Printf("Error getting note: %v\n", err)
+		return err
+	}
 
 	err = d.c.SendNote(note, mr.ProjectId, mr.MergeRequestIid, mr.AuthToken)
 	if err != nil {
