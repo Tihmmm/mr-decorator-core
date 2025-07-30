@@ -23,7 +23,6 @@ func (p *CdxParser) Type() string {
 
 func (p *CdxParser) SetConfig(cfg *config.ParserConfig) {
 	p.cfg = &cfg.ScaParserConfig
-	log.Println(p.cfg)
 }
 
 func (p *CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
