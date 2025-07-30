@@ -52,6 +52,7 @@ func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
 				time.Sleep(time.Duration(d.cfg.ArtifactDownloadRetryDelay) * time.Second)
 				continue
 			}
+			break
 		}
 		if err != nil {
 			log.Printf("Error getting artifact: %v\n", err)
