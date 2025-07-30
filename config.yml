@@ -6,8 +6,9 @@ server:
   port: 3000
   rate_limit: 3
   api_key: <strong_token_from_env>
+  supported_formats: ['*']
 gitlab_client:
-  ip: 0.0.0.0
+  ip: 127.0.0.1
   host: gitlab.example.com
 parser:
   sca:

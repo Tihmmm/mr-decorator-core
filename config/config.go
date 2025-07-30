@@ -20,9 +20,10 @@ type DecoratorConfig struct {
 }
 
 type ServerConfig struct {
-	Port      string `yaml:"port" default:"3000"`
-	RateLimit int    `yaml:"rate_limit" default:"3"`
-	ApiKey    string `yaml:"api_key"`
+	Port             string   `yaml:"port" default:"3000"`
+	RateLimit        int      `yaml:"rate_limit" default:"3"`
+	ApiKey           string   `yaml:"api_key"`
+	SupportedFormats []string `yaml:"supported_formats"`
 }
 type GitlabClientConfig struct {
 	Ip   string `yaml:"ip"`
