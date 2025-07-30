@@ -1,4 +1,4 @@
-package fpr
+package parser
 
 import (
 	"bufio"

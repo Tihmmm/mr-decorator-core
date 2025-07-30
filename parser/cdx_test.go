@@ -1,4 +1,4 @@
-package cdx
+package parser
 
 import (
 	"github.com/Tihmmm/mr-decorator-core/config"

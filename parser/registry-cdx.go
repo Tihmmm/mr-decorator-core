@@ -1,9 +1,8 @@
-package cdx
+package parser
 
 import (
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 	"log"
@@ -19,7 +18,7 @@ func (p *CdxParser) Name() string {
 }
 
 func (p *CdxParser) Type() string {
-	return parser.TypeSca
+	return TypeSca
 }
 
 func (p *CdxParser) SetConfig(cfg *config.ParserConfig) {
@@ -34,21 +33,21 @@ func (p *CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId
 		return "", err
 	}
 
-	var genReport parser.GenSca
-	parseGenReport(vulnMgmtId, p.cfg, &cdx, &genReport)
+	var genReport GenSca
+	parseCdxGenReport(vulnMgmtId, p.cfg, &cdx, &genReport)
 
 	genReport.ApplyLimit()
 
-	return templater.ExecToString(parser.Types[p.Type()], &genReport)
+	return templater.ExecToString(Types[p.Type()], &genReport)
 }
 
-func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX, dest *parser.GenSca) {
+func parseCdxGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX, dest *GenSca) {
 	dest.Count = cdx.vulnCount()
 	if cfg.VulnMgmtProjectUrlTmpl != "" {
 		dest.VulnMgmtProjectUrl = fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
 	}
 	for _, vuln := range cdx.Vulnerabilities {
-		cve := parser.Cve{
+		cve := Cve{
 			Id:              vuln.CveId,
 			LibraryName:     vuln.Affects[0].LibraryName,
 			Description:     vuln.Description,
@@ -60,5 +59,5 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX,
 }
 
 func (p *CdxParser) Init() {
-	parser.Register(p)
+	Register(p)
 }

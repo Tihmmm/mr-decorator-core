@@ -1,4 +1,4 @@
-package depcheck
+package parser
 
 import (
 	"github.com/Tihmmm/mr-decorator-core/config"

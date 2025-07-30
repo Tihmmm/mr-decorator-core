@@ -1,9 +1,8 @@
-package depcheck
+package parser
 
 import (
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 	"log"
@@ -18,7 +17,7 @@ func (p *DepCheckParser) Name() string {
 }
 
 func (p *DepCheckParser) Type() string {
-	return parser.TypeSca
+	return TypeSca
 }
 
 func (p *DepCheckParser) SetConfig(cfg *config.ParserConfig) {
@@ -32,21 +31,21 @@ func (p *DepCheckParser) GetNoteFromReportFile(dir string, subpath string, vulnM
 		return "", err
 	}
 
-	var genReport parser.GenSca
-	parseGenReport(vulnMgmtId, p.cfg, &depcheck, &genReport)
+	var genReport GenSca
+	parseDepcheckGenReport(vulnMgmtId, p.cfg, &depcheck, &genReport)
 
 	genReport.ApplyLimit()
 
-	return templater.ExecToString(parser.Types[p.Type()], &genReport)
+	return templater.ExecToString(Types[p.Type()], &genReport)
 }
 
-func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyCheck, dest *parser.GenSca) {
+func parseDepcheckGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyCheck, dest *GenSca) {
 	dest.Count = dc.vulnCount()
 	baseUrl := fmt.Sprintf(cfg.VulnMgmtProjectUrlTmpl, vulnMgmtId)
 	dest.VulnMgmtProjectUrl = baseUrl
 	for _, v := range dc.Dependencies {
 		for _, vuln := range v.Vulnerabilities {
-			cve := parser.Cve{
+			cve := Cve{
 				Id:          vuln.CveId,
 				LibraryName: v.LibraryName,
 				Description: vuln.Description,
@@ -58,5 +57,5 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyC
 }
 
 func (p *DepCheckParser) Init(cfg *config.ScaParserConfig) {
-	parser.Register(p)
+	Register(p)
 }

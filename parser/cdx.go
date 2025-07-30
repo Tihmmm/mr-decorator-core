@@ -1,4 +1,4 @@
-package cdx
+package parser
 
 type cycloneDX struct {
 	Vulnerabilities []struct {

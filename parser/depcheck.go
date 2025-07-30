@@ -1,4 +1,4 @@
-package depcheck
+package parser
 
 type dependencyCheck struct {
 	Dependencies []struct {

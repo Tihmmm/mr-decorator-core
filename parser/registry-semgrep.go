@@ -1,8 +1,7 @@
-package semgrep
+package parser
 
 import (
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 )
 
@@ -15,7 +14,7 @@ func (p *SemgrepParser) Name() string {
 }
 
 func (p *SemgrepParser) Type() string {
-	return parser.TypeSast
+	return TypeSast
 }
 
 func (p *SemgrepParser) SetConfig(cfg *config.ParserConfig) {
@@ -23,12 +22,12 @@ func (p *SemgrepParser) SetConfig(cfg *config.ParserConfig) {
 }
 
 func (p *SemgrepParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
-	var genReport parser.GenSast
-	return templater.ExecToString(parser.Types[p.Type()], &genReport)
+	var genReport GenSast
+	return templater.ExecToString(Types[p.Type()], &genReport)
 }
 
-func Init(cfg *config.SastParserConfig) {
-	parser.Register(
+func (p *SemgrepParser) Init(cfg *config.SastParserConfig) {
+	Register(
 		&SemgrepParser{
 			cfg: cfg,
 		},

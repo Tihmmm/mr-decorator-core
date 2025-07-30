@@ -1,8 +1,7 @@
-package deptrack
+package parser
 
 import (
 	"github.com/Tihmmm/mr-decorator-core/config"
-	"github.com/Tihmmm/mr-decorator-core/parser"
 )
 
 type DeptrackParser struct {
@@ -14,7 +13,7 @@ func (p *DeptrackParser) Name() string {
 }
 
 func (p *DeptrackParser) Type() string {
-	return parser.TypeSca
+	return TypeSca
 }
 
 func (p *DeptrackParser) SetConfig(cfg *config.ParserConfig) {
@@ -26,8 +25,8 @@ func (p *DeptrackParser) GetNoteFromReportFile(dir string, subpath string, vulnM
 	panic("implement me")
 }
 
-func Init(cfg *config.ScaParserConfig) {
-	parser.Register(
+func (p *DeptrackParser) Init(cfg *config.ScaParserConfig) {
+	Register(
 		&DeptrackParser{
 			cfg: cfg,
 		},
