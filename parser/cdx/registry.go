@@ -59,6 +59,10 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cycloneDX,
 	dest.VulnMgmtReportPath = dest.VulnMgmtProjectUrl + cfg.ReportPath
 }
 
-func init() {
-	parser.Register(&CdxParser{})
+func Init(cfg *config.ScaParserConfig) {
+	parser.Register(
+		&CdxParser{
+			cfg: cfg,
+		},
+	)
 }

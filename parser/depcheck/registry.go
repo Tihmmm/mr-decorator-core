@@ -57,6 +57,10 @@ func parseGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dependencyC
 	dest.VulnMgmtReportPath = baseUrl + cfg.ReportPath
 }
 
-func init() {
-	parser.Register(&DepCheckParser{})
+func Init(cfg *config.ScaParserConfig) {
+	parser.Register(
+		&DepCheckParser{
+			cfg: cfg,
+		},
+	)
 }
