@@ -4,12 +4,14 @@ import (
 	"github.com/Tihmmm/mr-decorator-core/config"
 )
 
+const formatDependencyTrack = "dependency-track"
+
 type DeptrackParser struct {
 	cfg *config.ScaParserConfig
 }
 
 func (p *DeptrackParser) Name() string {
-	return "dependency-track"
+	return formatDependencyTrack
 }
 
 func (p *DeptrackParser) Type() string {
@@ -26,5 +28,7 @@ func (p *DeptrackParser) GetNoteFromReportFile(dir string, subpath string, vulnM
 }
 
 func init() {
+	if isToRegister(formatDependencyTrack) {
+	}
 	Register(&DeptrackParser{})
 }

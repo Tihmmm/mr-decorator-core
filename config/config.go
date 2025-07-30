@@ -7,6 +7,8 @@ import (
 	"os"
 )
 
+var RegisteredParsers []string
+
 type Config struct {
 	Decorator    DecoratorConfig    `yaml:"decorator"`
 	Server       ServerConfig       `yaml:"server"`
@@ -31,8 +33,9 @@ type GitlabClientConfig struct {
 }
 
 type ParserConfig struct {
-	ScaParserConfig  ScaParserConfig  `yaml:"sca"`
-	SastParserConfig SastParserConfig `yaml:"sast"`
+	ScaParserConfig   ScaParserConfig  `yaml:"sca"`
+	SastParserConfig  SastParserConfig `yaml:"sast"`
+	registeredParsers []string         `yaml:"registered_parsers"`
 }
 
 type ScaParserConfig struct {
@@ -61,6 +64,8 @@ func NewConfig(path string) (Config, error) {
 		log.Printf("Error parsing config.yml: %s\n", err)
 		return Config{}, err
 	}
+
+	RegisteredParsers = cfg.Parser.registeredParsers
 
 	return cfg, nil
 }

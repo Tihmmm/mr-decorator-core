@@ -5,12 +5,14 @@ import (
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 )
 
+const formatSemgrep = "semgrep"
+
 type SemgrepParser struct {
 	cfg *config.SastParserConfig
 }
 
 func (p *SemgrepParser) Name() string {
-	return "semgrep"
+	return formatSemgrep
 }
 
 func (p *SemgrepParser) Type() string {
@@ -27,5 +29,7 @@ func (p *SemgrepParser) GetNoteFromReportFile(dir string, subpath string, vulnMg
 }
 
 func init() {
-	Register(&SemgrepParser{})
+	if isToRegister(formatSemgrep) {
+		Register(&SemgrepParser{})
+	}
 }

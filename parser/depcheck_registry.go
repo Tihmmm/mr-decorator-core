@@ -8,12 +8,14 @@ import (
 	"log"
 )
 
+const formatDependencyCheck = "dependency-check"
+
 type DepCheckParser struct {
 	cfg *config.ScaParserConfig
 }
 
 func (p *DepCheckParser) Name() string {
-	return "dependency-check"
+	return formatDependencyCheck
 }
 
 func (p *DepCheckParser) Type() string {
@@ -57,5 +59,7 @@ func parseDepcheckGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dep
 }
 
 func init() {
-	Register(&DepCheckParser{})
+	if isToRegister(formatDependencyCheck) {
+		Register(&DepCheckParser{})
+	}
 }

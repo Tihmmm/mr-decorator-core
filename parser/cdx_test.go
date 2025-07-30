@@ -9,14 +9,14 @@ func TestCdxParser_GetNoteFromReportFile(t *testing.T) {
 	p := &CdxParser{}
 	cfg := &config.ParserConfig{
 		ScaParserConfig: config.ScaParserConfig{
-			VulnMgmtProjectUrlTmpl: "qwer",
-			VulnInstanceTmpl:       "test",
-			ReportPath:             "report",
+			VulnMgmtProjectUrlTmpl: "",
+			VulnInstanceTmpl:       "",
+			ReportPath:             "",
 		},
 	}
 	p.SetConfig(cfg)
 
-	note, err := p.GetNoteFromReportFile("../../test/files/", "trivy.json", 0)
+	note, err := p.GetNoteFromReportFile("../test/files/", "trivy.json", 0)
 	if err != nil {
 		t.Fatalf("GetNoteFromReportFile() error = %v", err)
 	}

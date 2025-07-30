@@ -7,12 +7,14 @@ import (
 	"log"
 )
 
+const formatFpr = "fpr"
+
 type FprParser struct {
 	cfg *config.SastParserConfig
 }
 
 func (p *FprParser) Name() string {
-	return "fpr"
+	return formatFpr
 }
 
 func (p *FprParser) Type() string {
@@ -64,5 +66,7 @@ func parseFprGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, 
 }
 
 func init() {
-	Register(&FprParser{})
+	if isToRegister(formatFpr) {
+		Register(&FprParser{})
+	}
 }

@@ -8,13 +8,15 @@ import (
 	"log"
 )
 
-// CdxParser for json CycloneDX 1.6 SBOMs as outputted by trivy
+const formatCyclonedx = "cyclonedx"
+
+// CdxParser for json CycloneDX 1.6 SBOMs as produced by trivy
 type CdxParser struct {
 	cfg *config.ScaParserConfig
 }
 
 func (p *CdxParser) Name() string {
-	return "cyclonedx"
+	return formatCyclonedx
 }
 
 func (p *CdxParser) Type() string {
@@ -58,5 +60,7 @@ func parseCdxGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cyclone
 }
 
 func init() {
-	Register(&CdxParser{})
+	if isToRegister(formatCyclonedx) {
+		Register(&CdxParser{})
+	}
 }

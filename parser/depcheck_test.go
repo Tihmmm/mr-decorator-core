@@ -9,15 +9,11 @@ import (
 func TestDepCheckParser_GetNoteFromReportFile(t *testing.T) {
 	p := &DepCheckParser{}
 	cfg := &config.ParserConfig{
-		ScaParserConfig: config.ScaParserConfig{
-			VulnMgmtProjectUrlTmpl: "qwer",
-			VulnInstanceTmpl:       "test",
-			ReportPath:             "report",
-		},
+		ScaParserConfig: config.ScaParserConfig{},
 	}
 	p.SetConfig(cfg)
 
-	note, err := p.GetNoteFromReportFile("../../test/files/", "depcheck.json", 0)
+	note, err := p.GetNoteFromReportFile("../test/files/", "dependency-check-report.json", 0)
 	if err != nil {
 		t.Fatalf("GetNoteFromReportFile() error = %v", err)
 	}
