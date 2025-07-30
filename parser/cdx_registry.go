@@ -1,11 +1,11 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
-	"log"
 )
 
 const formatCyclonedx = "cyclonedx"
@@ -30,8 +30,7 @@ func (p *CdxParser) SetConfig(cfg *config.ParserConfig) {
 func (p *CdxParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
 	var cdx cycloneDX
 	if err := file.ParseJsonFile(dir, subpath, &cdx); err != nil {
-		log.Printf("error parsing cyclonedx file: %v\n", err)
-		return "", err
+		return "", errors.New(fmt.Sprintf("error parsing cyclonedx file: %v\n", err))
 	}
 
 	var genReport GenSca

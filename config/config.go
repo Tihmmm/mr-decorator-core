@@ -2,8 +2,9 @@ package config
 
 import (
 	"bytes"
+	"errors"
+	"fmt"
 	"github.com/goccy/go-yaml"
-	"log"
 	"os"
 )
 
@@ -53,16 +54,14 @@ type SastParserConfig struct {
 func NewConfig(path string) (Config, error) {
 	configBytes, err := os.ReadFile(path)
 	if err != nil {
-		log.Printf("Error reading config.yml: %s\n", err)
-		return Config{}, err
+		return Config{}, errors.New(fmt.Sprintf("Error reading config.yml: %s\n", err))
 	}
 
 	var cfg Config
 	buf := bytes.NewBuffer(configBytes)
 	dec := yaml.NewDecoder(buf)
 	if err := dec.Decode(&cfg); err != nil {
-		log.Printf("Error parsing config.yml: %s\n", err)
-		return Config{}, err
+		return Config{}, errors.New(fmt.Sprintf("Error parsing config.yml: %s\n", err))
 	}
 
 	RegisteredParsers = cfg.Parser.registeredParsers

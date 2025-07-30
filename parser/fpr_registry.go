@@ -1,10 +1,10 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
-	"log"
 )
 
 const formatFpr = "fpr"
@@ -28,8 +28,7 @@ func (p *FprParser) SetConfig(cfg *config.ParserConfig) {
 func (p *FprParser) GetNoteFromReportFile(dir string, _ string, vulnMgmtId int) (string, error) {
 	var fprr fpr
 	if err := ParseFprFile(dir, &fprr); err != nil {
-		log.Printf("error parsing fpr file: %v\n", err)
-		return "", err
+		return "", errors.New(fmt.Sprintf("error parsing fpr file: %v\n", err))
 	}
 
 	var genReport GenSast

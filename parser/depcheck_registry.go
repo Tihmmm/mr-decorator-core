@@ -1,11 +1,11 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
-	"log"
 )
 
 const formatDependencyCheck = "dependency-check"
@@ -29,8 +29,7 @@ func (p *DepCheckParser) SetConfig(cfg *config.ParserConfig) {
 func (p *DepCheckParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
 	var depcheck dependencyCheck
 	if err := file.ParseJsonFile(dir, subpath, &depcheck); err != nil {
-		log.Printf("error parsing dependency check file: %v\n", err)
-		return "", err
+		return "", errors.New(fmt.Sprintf("error parsing dependency check file: %v\n", err))
 	}
 
 	var genReport GenSca

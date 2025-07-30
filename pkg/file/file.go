@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -12,8 +13,7 @@ import (
 func ReadCsv(dir, subpath string) ([][]string, error) {
 	root, err := os.OpenRoot(dir)
 	if err != nil {
-		log.Printf("Error opening directory root: %s\n", err)
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("Error opening directory root: %s\n", err))
 	}
 	defer func(root *os.Root) {
 		if err := root.Close(); err != nil {
@@ -24,8 +24,7 @@ func ReadCsv(dir, subpath string) ([][]string, error) {
 
 	file, err := root.Open(subpath)
 	if err != nil {
-		log.Printf("Error opening csv file: %s\n", err)
-		return nil, err
+		return nil, errors.New(fmt.Sprintf("Error opening csv file: %s\n", err))
 	}
 	defer func(file *os.File) {
 		err := file.Close()
@@ -43,8 +42,7 @@ func ReadCsv(dir, subpath string) ([][]string, error) {
 			break
 		}
 		if err != nil {
-			log.Printf("Error parsing csv: %s\n", err)
-			return nil, err
+			return nil, errors.New(fmt.Sprintf("Error parsing csv: %s\n", err))
 		}
 		records = append(records, record)
 	}
@@ -55,8 +53,7 @@ func ReadCsv(dir, subpath string) ([][]string, error) {
 func ParseJsonFile(dir, subpath string, dest any) error {
 	root, err := os.OpenRoot(dir)
 	if err != nil {
-		log.Printf("Error opening directory root: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error opening directory root: %s\n", err))
 	}
 	defer func(root *os.Root) {
 		if err := root.Close(); err != nil {
@@ -67,8 +64,7 @@ func ParseJsonFile(dir, subpath string, dest any) error {
 
 	jsonFile, err := root.Open(subpath)
 	if err != nil {
-		log.Printf("Error opening jsonFile file: %s, err: %s\n", subpath, err)
-		return err
+		return errors.New(fmt.Sprintf("Error opening jsonFile file: %s, err: %s\n", subpath, err))
 	}
 	defer func(file *os.File) {
 		err := file.Close()
@@ -80,17 +76,17 @@ func ParseJsonFile(dir, subpath string, dest any) error {
 
 	jsonParser := json.NewDecoder(jsonFile)
 	if err = jsonParser.Decode(dest); err != nil {
-		log.Printf("Error decoding json file: %s, err: %s\n", subpath, err)
-		return err
+		return errors.New(fmt.Sprintf("Error decoding json file: %s, err: %s\n", subpath, err))
 	}
 
 	return nil
 }
 
-func DeleteDirectory(dir string) {
+func DeleteDirectory(dir string) error {
 	err := os.RemoveAll(dir)
 	if err != nil {
-		log.Printf("Error deleting directory %s: %s\n", dir, err)
-		return
+		return errors.New(fmt.Sprintf("Error deleting directory %s: %s\n", dir, err))
 	}
+
+	return nil
 }

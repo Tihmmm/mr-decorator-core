@@ -2,6 +2,8 @@ package parser
 
 import (
 	"bufio"
+	"errors"
+	"fmt"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"log"
 	"os"
@@ -37,32 +39,27 @@ func (f *fpr) vulnCount() int {
 
 func ParseFprFile(dir string, dest *fpr) (err error) {
 	if err := extractVulns(dir); err != nil {
-		log.Printf("Error parsing fpr: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error parsing fpr: %s\n", err))
 	}
 
 	dest.criticalCount, err = extractVulnCount(dir, criticalCountFile)
 	if err != nil {
-		log.Printf("Error parsing critical count: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error parsing critical count: %s\n", err))
 	}
 	dest.highCount, err = extractVulnCount(dir, highCountFile)
 	if err != nil {
-		log.Printf("Error parsing high count: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error parsing high count: %s\n", err))
 	}
 
 	criticalRecords, err := extractRecords(dir, criticalCsv)
 	if err != nil {
-		log.Printf("Error parsing critical records: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error parsing critical records: %s\n", err))
 	}
 	dest.criticalRecords = criticalRecords
 
 	highRecords, err := extractRecords(dir, highCsv)
 	if err != nil {
-		log.Printf("Error parsing high records: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error parsing high records: %s\n", err))
 	}
 	dest.highRecords = highRecords
 
@@ -71,12 +68,10 @@ func ParseFprFile(dir string, dest *fpr) (err error) {
 
 func extractVulns(fileDir string) error {
 	if err := exec.Command(fpruCritScriptPath, fileDir).Run(); err != nil {
-		log.Printf("Error extracting critical vulns: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error extracting critical vulns: %s\n", err))
 	}
 	if err := exec.Command(fpruHighScriptPath, fileDir).Run(); err != nil {
-		log.Printf("Error extracting high vulns: %s\n", err)
-		return err
+		return errors.New(fmt.Sprintf("Error extracting high vulns: %s\n", err))
 	}
 	return nil
 }
@@ -84,8 +79,7 @@ func extractVulns(fileDir string) error {
 func extractVulnCount(dir, subpath string) (int, error) {
 	root, err := os.OpenRoot(dir)
 	if err != nil {
-		log.Printf("Error opening directory root: %s\n", err)
-		return -1, err
+		return -1, errors.New(fmt.Sprintf("Error opening directory root: %s\n", err))
 	}
 	defer func(root *os.Root) {
 		if err := root.Close(); err != nil {
@@ -96,8 +90,7 @@ func extractVulnCount(dir, subpath string) (int, error) {
 
 	vulnCountFile, err := root.Open(subpath)
 	if err != nil {
-		log.Printf("Error opening vulns count file: %s\n", err)
-		return -1, err
+		return -1, errors.New(fmt.Sprintf("Error opening vulns count file: %s\n", err))
 	}
 	defer func(file *os.File) {
 		if err := file.Close(); err != nil {
@@ -118,8 +111,7 @@ func extractVulnCount(dir, subpath string) (int, error) {
 func extractRecords(dir, subpath string) ([]fprRecord, error) {
 	records, err := file.ReadCsv(dir, subpath)
 	if err != nil {
-		log.Printf("Error extracting fpr records")
-		return []fprRecord{}, err
+		return []fprRecord{}, errors.New(fmt.Sprintf("Error extracting fpr records"))
 	}
 	var fprRecords []fprRecord
 	for i := 1; i < len(records); i++ {
