@@ -25,10 +25,6 @@ func (p *DeptrackParser) GetNoteFromReportFile(dir string, subpath string, vulnM
 	panic("implement me")
 }
 
-func (p *DeptrackParser) Init(cfg *config.ScaParserConfig) {
-	Register(
-		&DeptrackParser{
-			cfg: cfg,
-		},
-	)
+func init() {
+	Register(&DeptrackParser{})
 }

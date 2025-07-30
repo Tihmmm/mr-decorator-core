@@ -26,10 +26,6 @@ func (p *SemgrepParser) GetNoteFromReportFile(dir string, subpath string, vulnMg
 	return templater.ExecToString(Types[p.Type()], &genReport)
 }
 
-func (p *SemgrepParser) Init(cfg *config.SastParserConfig) {
-	Register(
-		&SemgrepParser{
-			cfg: cfg,
-		},
-	)
+func init() {
+	Register(&SemgrepParser{})
 }

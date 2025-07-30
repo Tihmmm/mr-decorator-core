@@ -63,10 +63,6 @@ func parseFprGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, 
 	dest.VulnMgmtReportPath = baseUrl + cfg.ReportPath
 }
 
-func Init(cfg *config.SastParserConfig) {
-	Register(
-		&FprParser{
-			cfg: cfg,
-		},
-	)
+func init() {
+	Register(&FprParser{})
 }
