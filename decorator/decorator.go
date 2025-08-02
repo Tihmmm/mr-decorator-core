@@ -40,10 +40,10 @@ func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
 	log.Printf("%s Started processing request for project: %d, merge request id: %d, job id: %d\n", time.Now().Format(time.DateTime), mr.ProjectId, mr.MergeRequestIid, mr.JobId)
 
 	artifactsDir := ""
-	var err error
 	if d.mode == ModeCli && mr.FilePath != "" {
 		artifactsDir, mr.ArtifactFileName = filepath.Split(mr.FilePath)
 	} else {
+		var err error
 		retryCount := 0
 		for retryCount < d.cfg.ArtifactDownloadMaxRetries {
 			artifactsDir, err = d.c.DownloadArtifact(mr.ProjectId, mr.JobId, mr.ArtifactFileName, mr.AuthToken)
