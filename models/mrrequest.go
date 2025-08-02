@@ -7,6 +7,6 @@ type MRRequest struct {
 	JobId               int    `json:"job_id"`
 	ArtifactFormat      string `json:"format" validate:"required"`
 	ArtifactFileName    string `json:"artifact_file_name"`
-	MergeRequestIid     int    `json:"merge_request_iid" validate:"required"`
-	VulnerabilityMgmtId int    `json:"vulnerability_mgmt_id" validate:"required"`
+	MergeRequestIid     int    `json:"merge_request_iid"`
+	VulnerabilityMgmtId int    `json:"vulnerability_mgmt_id"`
 }
