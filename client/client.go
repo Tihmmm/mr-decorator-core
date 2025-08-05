@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 )
 
 type Client interface {
@@ -27,7 +28,9 @@ type GitlabClient struct {
 }
 
 func NewGitlabClient(cfg cfg.GitlabClientConfig) Client {
-	config := safeurl.GetConfigBuilder().SetAllowedIPs(cfg.Ip).
+	config := safeurl.GetConfigBuilder().
+		SetAllowedIPs(cfg.Ip).
+		SetTimeout(time.Duration(30) * time.Second).
 		Build()
 	httpClient := &GitlabClient{
 		cfg:    cfg,
