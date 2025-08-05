@@ -12,7 +12,6 @@ var RegisteredParsers []string
 
 type Config struct {
 	Decorator    DecoratorConfig    `yaml:"decorator"`
-	Server       ServerConfig       `yaml:"server"`
 	GitlabClient GitlabClientConfig `yaml:"gitlab_client"`
 	Parser       ParserConfig       `yaml:"parser"`
 }
@@ -22,12 +21,6 @@ type DecoratorConfig struct {
 	ArtifactDownloadRetryDelay int `yaml:"artifact_download_retry_delay" default:"2"` // seconds
 }
 
-type ServerConfig struct {
-	Port             string   `yaml:"port" default:"3000"`
-	RateLimit        int      `yaml:"rate_limit" default:"3"`
-	ApiKey           string   `yaml:"api_key"`
-	SupportedFormats []string `yaml:"supported_formats"`
-}
 type GitlabClientConfig struct {
 	Ip   string `yaml:"ip"`
 	Host string `yaml:"host"`
