@@ -7,6 +7,7 @@ import (
 	"fmt"
 	cfg "github.com/Tihmmm/mr-decorator-core/config"
 	custErrors "github.com/Tihmmm/mr-decorator-core/errors"
+	"github.com/Tihmmm/mr-decorator-core/models"
 	"github.com/doyensec/safeurl"
 	"github.com/google/uuid"
 	"io"
@@ -90,9 +91,7 @@ func (c *GitlabClient) DownloadArtifact(projectId int, jobId int, artifactFileNa
 }
 
 func (c *GitlabClient) SendNote(note string, projectId int, mergeRequestIid int, glToken string) (err error) {
-	body := struct {
-		Body string `json:"body"`
-	}{note}
+	body := models.NoteRequest{Body: note}
 	bodyBytes, err := json.Marshal(body)
 	if err != nil {
 		return errors.New(fmt.Sprintf("Error parsing body: %s\n", err))
