@@ -22,8 +22,9 @@ type DecoratorConfig struct {
 }
 
 type GitlabClientConfig struct {
-	Ip   string `yaml:"ip"`
-	Host string `yaml:"host"`
+	Ip             string `yaml:"ip"`
+	Host           string `yaml:"host"`
+	TimeoutSeconds int    `yaml:"timeout_seconds"`
 }
 
 type ParserConfig struct {

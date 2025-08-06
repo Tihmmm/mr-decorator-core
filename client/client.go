@@ -31,7 +31,7 @@ type GitlabClient struct {
 func NewGitlabClient(cfg cfg.GitlabClientConfig) Client {
 	config := safeurl.GetConfigBuilder().
 		SetAllowedIPs(cfg.Ip).
-		SetTimeout(time.Duration(30) * time.Second).
+		SetTimeout(time.Duration(cfg.TimeoutSeconds) * time.Second).
 		Build()
 	httpClient := &GitlabClient{
 		cfg:    cfg,
