@@ -4,6 +4,8 @@ import (
 	"github.com/Tihmmm/mr-decorator-core/config"
 )
 
+const sastVulnsDisplayed = scaVulnsDisplayed
+
 type Sast interface {
 	vulnCount() int
 	ToGenSast(cfg config.SastParserConfig, vulnMgmtId int) GenSast

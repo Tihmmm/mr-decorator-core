@@ -4,6 +4,8 @@ import (
 	"github.com/Tihmmm/mr-decorator-core/config"
 )
 
+const scaVulnsDisplayed = 10
+
 type Sca interface {
 	vulnCount() int
 	ToGenSca(cfg config.ScaParserConfig, vulnMgmtId int) GenSca
