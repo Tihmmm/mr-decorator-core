@@ -47,7 +47,7 @@ func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
 		retryCount := 0
 		for retryCount < d.cfg.ArtifactDownloadMaxRetries {
 			artifactsDir, err = d.c.DownloadArtifact(mr.ProjectId, mr.JobId, mr.ArtifactFileName, mr.AuthToken)
-			if err != nil && errors.Is(err, &custErrors.DownloadError{}) {
+			if errors.Is(err, &custErrors.DownloadError{}) {
 				retryCount++
 				time.Sleep(time.Duration(d.cfg.ArtifactDownloadRetryDelay) * time.Second)
 				continue
