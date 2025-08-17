@@ -1,8 +1,9 @@
 package parser
 
 import (
-	"github.com/Tihmmm/mr-decorator-core/config"
 	"testing"
+
+	"github.com/Tihmmm/mr-decorator-core/config"
 )
 
 func TestCdxParser_GetNoteFromReportFile(t *testing.T) {

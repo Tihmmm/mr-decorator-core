@@ -3,6 +3,7 @@ package parser
 import (
 	"errors"
 	"fmt"
+
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
 )
@@ -65,7 +66,5 @@ func parseFprGenReport(vulnMgmtId int, cfg *config.SastParserConfig, fprr *fpr, 
 }
 
 func init() {
-	if isToRegister(formatFpr) {
-		Register(&FprParser{})
-	}
+	Register(&FprParser{})
 }

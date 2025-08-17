@@ -1,11 +1,12 @@
 package validator
 
 import (
+	"log"
+	"slices"
+
 	"github.com/Tihmmm/mr-decorator-core/models"
 	"github.com/Tihmmm/mr-decorator-core/parser"
 	jsonvalidator "github.com/go-playground/validator/v10"
-	"log"
-	"slices"
 )
 
 type Validator interface {

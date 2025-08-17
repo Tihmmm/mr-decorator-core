@@ -3,6 +3,7 @@ package parser
 import (
 	"errors"
 	"fmt"
+
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
@@ -58,7 +59,5 @@ func parseDepcheckGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, dc *dep
 }
 
 func init() {
-	if isToRegister(formatDependencyCheck) {
-		Register(&DepCheckParser{})
-	}
+	Register(&DepCheckParser{})
 }

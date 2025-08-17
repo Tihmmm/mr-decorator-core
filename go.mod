@@ -1,8 +1,6 @@
 module github.com/Tihmmm/mr-decorator-core
 
-go 1.24.0
-
-toolchain go1.24.5
+go 1.24.5
 
 require (
 	github.com/doyensec/safeurl v0.2.2

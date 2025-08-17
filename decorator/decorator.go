@@ -2,15 +2,16 @@ package decorator
 
 import (
 	"errors"
+	"log"
+	"path/filepath"
+	"time"
+
 	"github.com/Tihmmm/mr-decorator-core/client"
 	"github.com/Tihmmm/mr-decorator-core/config"
 	custErrors "github.com/Tihmmm/mr-decorator-core/errors"
 	"github.com/Tihmmm/mr-decorator-core/models"
 	"github.com/Tihmmm/mr-decorator-core/parser"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
-	"log"
-	"path/filepath"
-	"time"
 )
 
 const (

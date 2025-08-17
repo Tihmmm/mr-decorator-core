@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/Tihmmm/mr-decorator-core/config"
 )
 
@@ -24,11 +26,9 @@ func (p *DeptrackParser) SetConfig(cfg *config.ParserConfig) {
 
 func (p *DeptrackParser) GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error) {
 	//TODO implement me
-	panic("implement me")
+	return "", fmt.Errorf("not implemented: %s", formatDependencyTrack)
 }
 
 func init() {
-	if isToRegister(formatDependencyTrack) {
-	}
 	Register(&DeptrackParser{})
 }

@@ -3,6 +3,7 @@ package parser
 import (
 	"errors"
 	"fmt"
+
 	"github.com/Tihmmm/mr-decorator-core/config"
 	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"github.com/Tihmmm/mr-decorator-core/pkg/templater"
@@ -59,7 +60,5 @@ func parseCdxGenReport(vulnMgmtId int, cfg *config.ScaParserConfig, cdx *cyclone
 }
 
 func init() {
-	if isToRegister(formatCyclonedx) {
-		Register(&CdxParser{})
-	}
+	Register(&CdxParser{})
 }

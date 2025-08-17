@@ -4,11 +4,12 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 	"log"
 	"os"
 	"os/exec"
 	"strconv"
+
+	"github.com/Tihmmm/mr-decorator-core/pkg/file"
 )
 
 const (

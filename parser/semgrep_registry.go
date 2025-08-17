@@ -29,7 +29,5 @@ func (p *SemgrepParser) GetNoteFromReportFile(dir string, subpath string, vulnMg
 }
 
 func init() {
-	if isToRegister(formatSemgrep) {
-		Register(&SemgrepParser{})
-	}
+	Register(&SemgrepParser{})
 }

@@ -1,9 +1,10 @@
 package parser
 
 import (
-	"github.com/Tihmmm/mr-decorator-core/config"
 	"log"
 	"testing"
+
+	"github.com/Tihmmm/mr-decorator-core/config"
 )
 
 func TestDepCheckParser_GetNoteFromReportFile(t *testing.T) {

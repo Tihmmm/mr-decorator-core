@@ -4,16 +4,15 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/goccy/go-yaml"
 	"os"
+
+	"github.com/goccy/go-yaml"
 )
 
-var RegisteredParsers []string
-
 type Config struct {
-	Decorator    DecoratorConfig    `yaml:"decorator"`
-	GitlabClient GitlabClientConfig `yaml:"gitlab_client"`
-	Parser       ParserConfig       `yaml:"parser"`
+	Decorator    DecoratorConfig  `yaml:"decorator"`
+	GitlabClient BaseClientConfig `yaml:"client"`
+	Parser       ParserConfig     `yaml:"parser"`
 }
 
 type DecoratorConfig struct {
@@ -21,7 +20,7 @@ type DecoratorConfig struct {
 	ArtifactDownloadRetryDelay int `yaml:"artifact_download_retry_delay" default:"2"` // seconds
 }
 
-type GitlabClientConfig struct {
+type BaseClientConfig struct {
 	Ip             string `yaml:"ip"`
 	Host           string `yaml:"host"`
 	TimeoutSeconds int    `yaml:"timeout_seconds"`
@@ -57,8 +56,6 @@ func NewConfig(path string) (Config, error) {
 	if err := dec.Decode(&cfg); err != nil {
 		return Config{}, errors.New(fmt.Sprintf("Error parsing config.yml: %s\n", err))
 	}
-
-	RegisteredParsers = cfg.Parser.registeredParsers
 
 	return cfg, nil
 }

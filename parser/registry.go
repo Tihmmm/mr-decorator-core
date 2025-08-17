@@ -1,10 +1,19 @@
 package parser
 
 import (
-	"github.com/Tihmmm/mr-decorator-core/errors"
 	"log"
 	"sync"
+
+	"github.com/Tihmmm/mr-decorator-core/config"
+	"github.com/Tihmmm/mr-decorator-core/errors"
 )
+
+type Parser interface {
+	Name() string
+	Type() string
+	SetConfig(cfg *config.ParserConfig)
+	GetNoteFromReportFile(dir string, subpath string, vulnMgmtId int) (string, error)
+}
 
 var (
 	mu       sync.RWMutex
