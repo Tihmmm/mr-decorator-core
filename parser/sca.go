@@ -12,10 +12,10 @@ type Sca interface {
 }
 
 type GenSca struct {
-	Count              int
-	Cves               []Cve
 	VulnMgmtProjectUrl string
 	VulnMgmtReportPath string
+	Cves               []Cve
+	Count              int
 }
 
 type Cve struct {

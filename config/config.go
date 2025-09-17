@@ -10,9 +10,9 @@ import (
 )
 
 type Config struct {
-	Decorator    DecoratorConfig  `yaml:"decorator"`
-	GitlabClient BaseClientConfig `yaml:"client"`
 	Parser       ParserConfig     `yaml:"parser"`
+	GitlabClient BaseClientConfig `yaml:"client"`
+	Decorator    DecoratorConfig  `yaml:"decorator"`
 }
 
 type DecoratorConfig struct {

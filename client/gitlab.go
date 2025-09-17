@@ -20,8 +20,8 @@ import (
 )
 
 type GitlabClient struct {
-	cfg    cfg.BaseClientConfig
 	client *safeurl.WrappedClient
+	cfg    cfg.BaseClientConfig
 }
 
 func NewGitlabClient(cfg cfg.BaseClientConfig) Client {

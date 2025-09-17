@@ -12,13 +12,13 @@ type Sast interface {
 }
 
 type GenSast struct {
+	VulnMgmtProjectUrl string
+	VulnMgmtReportPath string
+	HighVulns          []Vulnerability
+	CriticalVulns      []Vulnerability
 	HighCount          int
 	CriticalCount      int
 	HcCount            int
-	HighVulns          []Vulnerability
-	CriticalVulns      []Vulnerability
-	VulnMgmtProjectUrl string
-	VulnMgmtReportPath string
 }
 
 type Vulnerability struct {
