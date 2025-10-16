@@ -22,10 +22,10 @@ const (
 )
 
 type fpr struct {
-	highCount       int
-	criticalCount   int
 	highRecords     []fprRecord
 	criticalRecords []fprRecord
+	highCount       int
+	criticalCount   int
 }
 
 type fprRecord struct {

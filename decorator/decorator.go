@@ -24,9 +24,9 @@ type Decorator interface {
 }
 
 type MRDecorator struct {
+	c    client.Client
 	mode string // either `cli` or `server`
 	cfg  config.DecoratorConfig
-	c    client.Client
 }
 
 func NewDecorator(m string, cfg config.DecoratorConfig, c client.Client) Decorator {
