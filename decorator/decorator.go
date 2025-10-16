@@ -60,7 +60,7 @@ func (d *MRDecorator) Decorate(mr *models.MRRequest, prsr parser.Parser) error {
 			return err
 		}
 	}
-	if d.mode == ModeServer {
+	if d.mode == ModeServer || mr.FilePath == "" {
 		defer file.DeleteDirectory(artifactsDir)
 	}
 
